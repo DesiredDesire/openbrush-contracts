@@ -27,3 +27,5 @@ pub mod psp22_pallet;
 pub mod psp34;
 #[cfg(feature = "psp37")]
 pub mod psp37;
+#[cfg(feature = "psp55")]
+pub mod psp55;

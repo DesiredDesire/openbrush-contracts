@@ -19,18 +19,27 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+/// Extension of [`PSP55`] which supports token wrapping
+pub use crate::traits::errors::PSP55Error;
+pub use crate::traits::psp55::*;
 
-mod types;
+use openbrush::traits::{
+    AccountId,
+    Balance,
+};
+
+/// The idea of PSP55Wrapper is that it is PSP55 by itself.
+/// Wrapper only adds 2 additional methods for depositing and withdrawing.
+#[openbrush::wrapper]
+pub type PSP55WrapperRef = dyn PSP55Wrapper + PSP55;
+
+#[openbrush::trait_definition]
+pub trait PSP55Wrapper: PSP55 {
+    /// Allow a user to deposit `amount` of underlying tokens and mint `amount` of the wrapped tokens to `account`
+    #[ink(message)]
+    fn deposit_for(&mut self, account: AccountId, amount: Balance) -> Result<(), PSP55Error>;
+
+    /// Allow a user to burn `amount` of wrapped tokens and withdraw the corresponding number of underlying tokens to `account`
+    #[ink(message)]
+    fn withdraw_to(&mut self, account: AccountId, amount: Balance) -> Result<(), PSP55Error>;
+}

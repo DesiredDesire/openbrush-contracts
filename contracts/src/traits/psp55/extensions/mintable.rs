@@ -19,18 +19,22 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+/// Extension of [`PSP55`] that allows create `amount` tokens
+/// and assigns them to `account`, increasing the total supply
+pub use crate::traits::errors::PSP55Error;
+use openbrush::traits::{
+    AccountId,
+    Balance,
+};
 
-mod types;
+#[openbrush::wrapper]
+pub type PSP55MintableRef = dyn PSP55Mintable;
+
+#[openbrush::trait_definition]
+pub trait PSP55Mintable {
+    /// Minting `amount` tokens to the account.
+    ///
+    /// See [`PSP55::_mint_to`].
+    #[ink(message)]
+    fn mint(&mut self, account: AccountId, amount: Balance) -> Result<(), PSP55Error>;
+}

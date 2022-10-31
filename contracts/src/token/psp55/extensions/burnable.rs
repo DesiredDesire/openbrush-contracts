@@ -19,18 +19,26 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+pub use crate::{
+    psp55,
+    traits::psp55::{
+        extensions::burnable::*,
+        *,
+    },
+};
+pub use psp55::{
+    Internal as _,
+    Transfer as _,
+};
 
-mod types;
+use openbrush::traits::{
+    AccountId,
+    Balance,
+    Storage,
+};
+
+impl<T: Storage<psp55::Data>> PSP55Burnable for T {
+    default fn burn(&mut self, account: AccountId, amount: Balance) -> Result<(), PSP55Error> {
+        self._burn_from(account, amount)
+    }
+}

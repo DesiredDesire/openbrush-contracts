@@ -19,18 +19,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
 pub mod psp55;
-pub mod timelock_controller;
 
-mod types;
+pub use psp55::*;
+
+pub mod extensions {
+    pub mod burnable;
+    pub mod capped;
+    pub mod metadata;
+    pub mod mintable;
+    pub mod wrapper;
+}
+
+pub mod utils {
+    pub mod token_timelock;
+}

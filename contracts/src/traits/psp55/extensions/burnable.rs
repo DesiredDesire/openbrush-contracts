@@ -19,18 +19,23 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+/// Extension of [`PSP55`] that allows token holders to destroy both their own
+/// tokens and those that they have an allowance for.
+pub use crate::traits::errors::PSP55Error;
+use openbrush::traits::{
+    AccountId,
+    Balance,
+};
 
-mod types;
+#[openbrush::wrapper]
+pub type PSP55BurnableRef = dyn PSP55Burnable;
+
+#[openbrush::trait_definition]
+pub trait PSP55Burnable {
+    /// Destroys `amount` tokens from `account`, deducting from the caller's
+    /// allowance.
+    ///
+    /// See [`PSP55::_burn_from`].
+    #[ink(message)]
+    fn burn(&mut self, account: AccountId, amount: Balance) -> Result<(), PSP55Error>;
+}

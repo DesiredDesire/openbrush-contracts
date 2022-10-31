@@ -6,8 +6,6 @@ members = [
 
 exclude = [
     "examples",
-    "example_project_structure",
-    "mock"
 ]
 
 [package]
@@ -62,6 +60,7 @@ std = [
     "openbrush_lang/std",
 ]
 psp22 = ["openbrush_contracts/psp22"]
+psp55 = ["openbrush_contracts/psp55"]
 psp22_pallet = ["openbrush_contracts/psp22_pallet"]
 psp34 = ["openbrush_contracts/psp34"]
 psp37 = ["openbrush_contracts/psp37"]

@@ -19,18 +19,45 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+pub use crate::{
+    psp55,
+    psp55::extensions::metadata,
+    traits::psp55::{
+        extensions::metadata::*,
+        *,
+    },
+};
+pub use psp55::{
+    Internal as _,
+    Transfer as _,
+};
 
-mod types;
+use openbrush::traits::{
+    Storage,
+    String,
+};
+
+pub const STORAGE_KEY: u32 = openbrush::storage_unique_key!(Data);
+
+#[derive(Default, Debug)]
+#[openbrush::upgradeable_storage(STORAGE_KEY)]
+pub struct Data {
+    pub name: Option<String>,
+    pub symbol: Option<String>,
+    pub decimals: u8,
+    pub _reserved: Option<()>,
+}
+
+impl<T: Storage<Data>> PSP55Metadata for T {
+    default fn token_name(&self) -> Option<String> {
+        self.data().name.clone()
+    }
+
+    default fn token_symbol(&self) -> Option<String> {
+        self.data().symbol.clone()
+    }
+
+    default fn token_decimals(&self) -> u8 {
+        self.data().decimals.clone()
+    }
+}

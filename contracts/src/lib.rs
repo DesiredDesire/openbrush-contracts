@@ -52,6 +52,8 @@ pub use token::psp22_pallet;
 pub use token::psp34;
 #[cfg(feature = "psp37")]
 pub use token::psp37;
+#[cfg(feature = "psp55")]
+pub use token::psp55;
 #[cfg(feature = "diamond")]
 pub use upgradeability::diamond;
 #[cfg(feature = "proxy")]

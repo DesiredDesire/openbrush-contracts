@@ -19,18 +19,23 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+use openbrush::traits::String;
 
-mod types;
+#[openbrush::wrapper]
+pub type PSP55MetadataRef = dyn PSP55Metadata;
+
+/// Trait that contains metadata
+#[openbrush::trait_definition]
+pub trait PSP55Metadata {
+    /// Returns the token name.
+    #[ink(message)]
+    fn token_name(&self) -> Option<String>;
+
+    /// Returns the token symbol.
+    #[ink(message)]
+    fn token_symbol(&self) -> Option<String>;
+
+    /// Returns the token decimals.
+    #[ink(message)]
+    fn token_decimals(&self) -> u8;
+}

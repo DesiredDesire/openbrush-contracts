@@ -28,6 +28,7 @@ mod payment_splitter;
 mod psp22;
 mod psp34;
 mod psp37;
+mod psp55;
 mod reentrancy_guard;
 mod timelock_controller;
 
@@ -52,6 +53,11 @@ pub use psp34::{
 pub use psp37::{
     PSP37Error,
     PSP37ReceiverError,
+};
+pub use psp55::{
+    PSP55Error,
+    PSP55ReceiverError,
+    PSP55TokenTimelockError,
 };
 pub use reentrancy_guard::ReentrancyGuardError;
 pub use timelock_controller::TimelockControllerError;

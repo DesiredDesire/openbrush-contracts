@@ -51,6 +51,7 @@ std = [
     "pallet-assets-chain-extension/ink-std",
 ]
 psp22 = []
+psp55 = []
 psp22_pallet = []
 psp34 = []
 psp37 = []
@@ -67,18 +68,4 @@ proxy = [
 ]
 diamond = [
     "ownable",
-]
-test-all = [
-    "psp22",
-    # "psp22_pallet", we ignore it during testing. It requries it own run of tests
-    "psp34",
-    "psp37",
-    "access_control",
-    "ownable",
-    "payment_splitter",
-    "reentrancy_guard",
-    "pausable",
-    "timelock_controller",
-    "proxy",
-    "diamond",
 ]

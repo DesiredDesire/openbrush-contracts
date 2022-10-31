@@ -19,18 +19,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-pub mod access_control;
-pub mod diamond;
-pub mod errors;
-pub mod flashloan;
-pub mod ownable;
-pub mod pausable;
-pub mod payment_splitter;
-pub mod proxy;
-pub mod psp22;
-pub mod psp34;
-pub mod psp37;
-pub mod psp55;
-pub mod timelock_controller;
+pub use crate::traits::errors::PSP55TokenTimelockError;
+use openbrush::traits::{
+    AccountId,
+    Timestamp,
+};
 
-mod types;
+#[openbrush::wrapper]
+pub type PSP55TokenTimelockRef = dyn PSP55TokenTimelock;
+
+#[openbrush::trait_definition]
+pub trait PSP55TokenTimelock {
+    /// Returns the token address
+    #[ink(message)]
+    fn token(&self) -> AccountId;
+
+    /// Returns the beneficiary of the tokens
+    #[ink(message)]
+    fn beneficiary(&self) -> AccountId;
+
+    /// Returns the timestamp when the tokens are released
+    #[ink(message)]
+    fn release_time(&self) -> Timestamp;
+
+    /// Transfers the tokens held by timelock to the beneficairy
+    #[ink(message)]
+    fn release(&mut self) -> Result<(), PSP55TokenTimelockError>;
+}
